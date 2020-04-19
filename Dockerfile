@@ -13,14 +13,16 @@ USER user
 WORKDIR /home/user
 
 RUN mkdir -p /home/user/.vnc && x11vnc -storepasswd passwd /home/user/.vnc/passwd && \
-    echo 'nohup /usr/bin/Xvfb :52 -screen 0 $RESOLUTION -ac +extension GLX +render -noreset > /dev/null 2>&1 &' > /home/user/startVNC.sh
-    echo 'nohup startxfce4 > /dev/null 2>&1 &' >> /home/user/startVNC.sh
+    echo 'nohup /usr/bin/Xvfb :52 -screen 0 $RESOLUTION -ac +extension GLX +render -noreset > /dev/null 2>&1 &' > /home/user/startVNC.sh && \
+    echo 'nohup startxfce4 > /dev/null 2>&1 &' >> /home/user/startVNC.sh && \
     echo 'nohup x11vnc -xkb -noxrecord -noxfixes -noxdamage -display :52 -rfbauth /home/user/.vnc/passwd -rfbport 5900 "$@"' >> /home/user/startVNC.sh
+
 ENTRYPOINT ["/bin/bash","-c", "\
             startVNC () { \
                 nohup /usr/bin/Xvfb :52 -screen 0 $RESOLUTION -ac +extension GLX +render -noreset > /dev/null 2>&1 & \
                 nohup startxfce4 > /dev/null 2>&1 & \
                 nohup x11vnc -xkb -noxrecord -noxfixes -noxdamage -display :52 -rfbauth /home/user/.vnc/passwd -rfbport 5900 \"$@\"; \
             }; \"$@\"", "foo"]
+
 EXPOSE 5900
 CMD ["startVNC"]
