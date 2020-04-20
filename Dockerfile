@@ -5,7 +5,7 @@ LABEL maintainer="Naveen S R <srnaveen2k@yahoo.com>"
 ENV DISPLAY :52
 ENV RESOLUTION 1920x1080x24 
 
-RUN apk add sudo bash xfce4 xvfb faenza-icon-theme x11vnc xfce4-terminal chromium && \
+RUN apk add sudo bash xfce4 xvfb lightdm-gtk-greeter x11vnc xfce4-terminal chromium && \
     echo 'CHROMIUM_FLAGS="--disable-gpu --disable-software-rasterizer --disable-dev-shm-usage --no-sandbox"' >> /etc/chromium/chromium.conf
 
 RUN adduser -h /home/user -s /bin/bash -S -D user && echo "user:passwd" | chpasswd && \
