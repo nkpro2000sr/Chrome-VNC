@@ -12,6 +12,14 @@ To change the default *Resolution*, run docker with env **-e RESOLUTION=required
 
 Connect to http://localhost:5980/vnc.html to access.  
 
+### For HTTPS ( Encrypted Connections )
+* with certificate.pem  
+`docker run --rm -it -p 5980:5980 -v certificate.pem:/home/user/certificate.pem -e CERT=/home/user/certificate.pem nkpro/chrome-novnc`
+* with self-signed certificate  
+`docker run --rm -it -p 5980:5980 -e CERT=self nkpro/chrome-novnc`
+
+Connect to https://localhost:5980/vnc.html to access.  
+
 ### To run bash command line
 `docker run --rm -it nkpro/chrome-novnc bash`
 
