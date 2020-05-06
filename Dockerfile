@@ -24,7 +24,7 @@ RUN mkdir -p /home/user/.vnc && x11vnc -storepasswd passwd /home/user/.vnc/passw
     sed -i -- "s/ps -p/ps -o pid | grep/g" /home/user/noVNC/utils/launch.sh && \
     sudo apk del git
 
-COPY startVNC.sh /home/user/
+COPY startVNC.sh /home/user/startVNC.sh
 RUN chmod +x /home/user/startVNC.sh
 
 ENTRYPOINT ["/bin/bash","-c", "\
