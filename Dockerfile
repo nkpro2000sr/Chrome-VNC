@@ -3,9 +3,12 @@ FROM alpine
 LABEL maintainer="Naveen S R <srnaveen2k@yahoo.com>"
 
 ENV DISPLAY :52
-ENV RESOLUTION 1920x1080x24 
+ENV RESOLUTION 1920x1080x24
+#ENV CERT path_to_certificate #[[ -f $CERT ]] For Encrypted Connections
+#ENV CERT self #[[ -n $CERT && ! -f $CERT ]] For Encrypted Connections with self-signed certificate using openssl
+#ENV CERT `unset` #[[ -z $CERT ]] For UnEncrypted Connections
 
-RUN apk add sudo bash xfce4 xvfb xdpyinfo lightdm-gtk-greeter x11vnc xfce4-terminal chromium python git && \
+RUN apk add sudo bash xfce4 xvfb xdpyinfo lightdm-gtk-greeter x11vnc xfce4-terminal chromium python git openssl && \
     echo 'CHROMIUM_FLAGS="--disable-gpu --disable-software-rasterizer --disable-dev-shm-usage --no-sandbox"' >> /etc/chromium/chromium.conf && \
     dbus-uuidgen > /var/lib/dbus/machine-id
 
@@ -21,14 +24,8 @@ RUN mkdir -p /home/user/.vnc && x11vnc -storepasswd passwd /home/user/.vnc/passw
     sed -i -- "s/ps -p/ps -o pid | grep/g" /home/user/noVNC/utils/launch.sh && \
     sudo apk del git
 
-RUN echo 'sudo rm -f /tmp/.X${DISPLAY#:}-lock' > /home/user/startVNC.sh && \
-    echo 'nohup /usr/bin/Xvfb $DISPLAY -screen 0 $RESOLUTION -ac +extension GLX +render -noreset > /dev/null || true &' >> /home/user/startVNC.sh && \
-    echo 'while [[ ! $(xdpyinfo -display $DISPLAY 2> /dev/null) ]]; do sleep .3; done' >> /home/user/startVNC.sh && \
-    echo 'nohup startxfce4 > /dev/null || true &' >> /home/user/startVNC.sh && \
-    echo 'nohup x11vnc -xkb -noxrecord -noxfixes -noxdamage -display $DISPLAY -rfbauth /home/user/.vnc/passwd -rfbport 5900 "$@" &' >> /home/user/startVNC.sh && \
-    echo 'echo Press Ctrl-C to exit' >> /home/user/startVNC.sh && \
-    echo 'nohup /home/user/noVNC/utils/launch.sh --vnc localhost:5900 --listen 5980' >> /home/user/startVNC.sh && \
-    chmod +x /home/user/startVNC.sh
+COPY startVNC.sh /home/user/
+RUN chmod +x /home/user/startVNC.sh
 
 ENTRYPOINT ["/bin/bash","-c", "\
             startVNC () { \
