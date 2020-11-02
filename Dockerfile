@@ -8,7 +8,7 @@ ENV RESOLUTION 1920x1080x24
 #ENV CERT self #[[ -n $CERT && ! -f $CERT ]] For Encrypted Connections with self-signed certificate using openssl
 #ENV CERT `unset` #[[ -z $CERT ]] For UnEncrypted Connections
 
-RUN apk add sudo bash xfce4 xvfb xdpyinfo lightdm-gtk-greeter x11vnc xfce4-terminal chromium python git openssl && \
+RUN apk add sudo bash xfce4 xvfb xdpyinfo lightdm-gtk-greeter x11vnc xfce4-terminal chromium python3 git openssl && \
     echo 'CHROMIUM_FLAGS="--disable-gpu --disable-software-rasterizer --disable-dev-shm-usage --no-sandbox"' >> /etc/chromium/chromium.conf && \
     dbus-uuidgen > /var/lib/dbus/machine-id
 
