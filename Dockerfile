@@ -9,6 +9,7 @@ ENV RESOLUTION 1920x1080x24
 #ENV CERT `unset` #[[ -z $CERT ]] For UnEncrypted Connections
 
 RUN apk add sudo bash xfce4 xvfb xdpyinfo lightdm-gtk-greeter x11vnc xfce4-terminal chromium python3 git openssl && \
+    ln -s /usr/bin/python3 /usr/bin/python && \
     echo 'CHROMIUM_FLAGS="--disable-gpu --disable-software-rasterizer --disable-dev-shm-usage --no-sandbox"' >> /etc/chromium/chromium.conf && \
     dbus-uuidgen > /var/lib/dbus/machine-id
 
