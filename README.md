@@ -1,6 +1,10 @@
 # Chrome-VNC
 Chromium with VNC on Alpine in Docker image.
 
+> username : user (user added to sudoers)  
+> password : passwd  
+> vnc password : passwd  
+
 ## To run Chrome VNC
 `docker run --rm -it -p 5900:5900 nkpro/chrome-vnc`
 
